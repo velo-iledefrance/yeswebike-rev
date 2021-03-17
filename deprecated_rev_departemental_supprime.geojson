@@ -1,0 +1,211 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            2.09438,
+            48.871908
+          ],
+          [
+            2.094423,
+            48.871668
+          ],
+          [
+            2.09437,
+            48.87159
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            2.087546,
+            48.872939
+          ],
+          [
+            2.087739,
+            48.872727
+          ],
+          [
+            2.087675,
+            48.872275
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            2.078463,
+            48.872581
+          ],
+          [
+            2.078379,
+            48.872686
+          ],
+          [
+            2.077549,
+            48.872365
+          ],
+          [
+            2.075789,
+            48.871419
+          ],
+          [
+            2.074234,
+            48.870402
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            2.087656,
+            48.872275
+          ],
+          [
+            2.087269,
+            48.872445
+          ],
+          [
+            2.085478,
+            48.872353
+          ],
+          [
+            2.084437,
+            48.872078
+          ],
+          [
+            2.084094,
+            48.871732
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "91201 - Jonction Viry – Chevilly Larue (N7)",
+        "description": "Benoit Carrouée - Suppression car projet de T7 sans pistes, recours en justice perdu (première instance et appel), et doctrine générale essonnienne d’éviter les centres-villes.\nÀ l’inverse, l’emprise de l’aqueduc de la Vanne de Orly à Mennecy a peu de carrefours, direct (rectiligne), emprise large, environnement presque toujours calme, connexions nombreuses vers des gares RER (Savigny, Grigny, Mennecy) ou tram (Athis, Courcouronnes), des zones industrielles, des lycées… permet de ‘tracer’ en sécurité et dans le calme pour ceux qui vont plus loin, ou de se connecter à la desserte locale."
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            2.373433,
+            48.686017
+          ],
+          [
+            2.371094,
+            48.688921
+          ],
+          [
+            2.370644,
+            48.691584
+          ],
+          [
+            2.371931,
+            48.698156
+          ],
+          [
+            2.371759,
+            48.706143
+          ],
+          [
+            2.370815,
+            48.71863
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Francilienne vélo de Lagny à Draveil ",
+        "description": "03.2020 non retenu dans le schéma Essone\nValorise la trame verte des grands massifs forestiers du Sud-Est en reliant un série de grands pôles urbains mal reliés par les transports en commun (ouvrage d'art à envisager : passerelle pour franchir la Seine entre Draveil et Évry)"
+      },
+      "geometry": {
+        "type": "MultiLineString",
+        "coordinates": [
+          [
+            [
+              2.545524,
+              48.730903
+            ],
+            [
+              2.545223,
+              48.733012
+            ],
+            [
+              2.546425,
+              48.734738
+            ],
+            [
+              2.557282,
+              48.745663
+            ],
+            [
+              2.566509,
+              48.752454
+            ],
+            [
+              2.575951,
+              48.760772
+            ],
+            [
+              2.580757,
+              48.765751
+            ],
+            [
+              2.6017,
+              48.770276
+            ],
+            [
+              2.599983,
+              48.776103
+            ],
+            [
+              2.598696,
+              48.780854
+            ],
+            [
+              2.600627,
+              48.78173
+            ],
+            [
+              2.603717,
+              48.789195
+            ],
+            [
+              2.60509,
+              48.798666
+            ],
+            [
+              2.608266,
+              48.800051
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}
