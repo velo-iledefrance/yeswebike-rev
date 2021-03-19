@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name=description content="Observatoire Collectif Vélo Ile-de-France">
+    <meta name="twitter:image:src" content="https://carte.velo-iledefrance.fr/images/social_media.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Observatoire Collectif Vélo Ile-de-France">
+    <meta name="twitter:description" content="Observatoire des pistes cyclables temporaires en Ile-de-France">
+
+    <meta property="og:site_name" content="Observatoire Collectif Vélo Ile-de-France">
+    <meta property="og:image" content="https://carte.velo-iledefrance.fr/images/social_media.png">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Observatoire Collectif Vélo Ile-de-France">
+    <meta property="og:url" content="https://velo-iledefrance.fr/">
+    <meta property="og:description" content="Observatoire des pistes cyclables temporaires en Ile-de-France">
+
+    <!--link rel="icon" type="image/png" sizes="16x16" href="https://carte.velo-iledefrance.fr/images/favicon-16.png"-->
+    <link rel="icon" type="image/png" sizes="192x192"
+        href="https://carte.velo-iledefrance.fr/images/cropped-favicon_cvidf_rvb-192x192.png">
+    <link rel="icon" type="image/png" sizes="228x228"
+        href="https://carte.velo-iledefrance.fr/images/cropped-favicon_cvidf_rvb-228x228.png">
+    <link rel="icon" type="image/png" sizes="32x32"
+        href="https://carte.velo-iledefrance.fr/images/cropped-favicon_cvidf_rvb-32x32.png">
+    <!--link rel="shortcut icon" href="https://carte.velo-iledefrance.fr/images/favicon.ico"-->
+
+    <title>Observatoire des coronapistes d’Île de France</title>
+
+    <link rel="stylesheet" href="css/leaflet.css">
+    <link rel="stylesheet" href="css/easy-button.css">
+    <link rel="stylesheet" href="css/L.Control.Locate.min.css">
+    <link rel="stylesheet" href="css/fa-all.min.css">
+    <link rel="stylesheet" href="css/leaflet-legend.css">
+    <link rel='stylesheet' href='css/leaflet.fullscreen.css' />
+    <link rel='stylesheet' href='css/merriweathersans.css' />
+
+    <style type="text/css">
+        @font-face {
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 400;
+            src: url('/webfonts/roboto-v20-latin-regular.eot');
+            /* IE9 Compat Modes */
+            src: local('Roboto'), local('Roboto-Regular'),
+                url('/webfonts/roboto-v20-latin-regular.eot?#iefix') format('embedded-opentype'),
+                /* IE6-IE8 */
+                url('/webfonts/roboto-v20-latin-regular.woff2') format('woff2'),
+                /* Super Modern Browsers */
+                url('/webfonts/roboto-v20-latin-regular.woff') format('woff'),
+                /* Modern Browsers */
+                url('/webfonts/roboto-v20-latin-regular.ttf') format('truetype'),
+                /* Safari, Android, iOS */
+                url('/webfonts/roboto-v20-latin-regular.svg#Roboto') format('svg');
+            /* Legacy iOS */
+        }
+
+        html,
+        body,
+        #container,
+        #map {
+            height: 100%;
+            width: 100%;
+        }
+
+        html {
+            font-family: Roboto, sans-serif;
+            color: #333333;
+        }
+
+        body {
+            margin: 0;
+            text-align: justify;
+            font-size: 14px;
+            overflow: hidden;
+        }
+
+        #container {
+            display: flex;
+            flex-flow: row wrap;
+        }
+
+        /* Elements to select a department */
+        #controlMap {
+            position: absolute;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            margin-top: 10px;
+        }
+
+        #controlMapContainer {
+            width: 370px;
+            margin: 0;
+            padding: 1rem 1rem 1rem 2rem;
+            /* Compensate the margin applied to inner elements on the right of 1rem by substracting here 1rem */
+            border: 2px solid rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+            line-height: 30px;
+            box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            text-overflow: ellipsis;
+            outline: 0;
+            background-color: #fff;
+        }
+
+        .tooltip {
+            white-space: normal;
+            box-shadow: 0 1px 10px rgba(0, 0, 0, 0.7);
+            font-family: 'Merriweather Sans';
+            pointer-events: all;
+            cursor: default;
+        }
+
+        #controlLineDisplay img {
+            max-height: 30px;
+        }
+
+        input[type=radio] {
+            position: fixed;
+            opacity: 0;
+            pointer-events: none;
+            width: 0;
+        }
+
+        input[type=radio]+label>img {
+            filter: grayscale(1);
+            transition: transform 0.1s ease-in;
+            /*, filter 0s ease-in 0.2s;*/
+        }
+
+        input[type=radio]:hover+label>img {
+            filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.4));
+            transform: scale(1.1, 1.1);
+            transform-origin: center;
+            backface-visibility: hidden;
+        }
+
+        input[type=radio]:checked+label>img {
+            filter: grayscale(0) drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.4));
+        }
+
+        #controlLineDisplay form {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+
+        .labelLineNumber {
+            flex-grow: 1;
+            margin-right: 1rem;
+            cursor: pointer;
+        }
+
+        @media all and (orientation: landscape) {
+            .tooltip {
+                min-width: 20vw;
+                max-width: 30vw;
+            }
+        }
+
+        @media all and (orientation: portrait) {
+            .tooltip {
+                min-width: 50vw;
+                max-width: 60vw;
+            }
+        }
+
+        #mainTitle {
+            margin-top: 0;
+        }
+
+        /* Watermark */
+        .leaflet-bottom.leaflet-left {
+            background-color: white;
+            padding: 5px;
+            border-right: 2px solid rgba(0, 0, 0, 0.2);
+            border-top: 2px solid rgba(0, 0, 0, 0.2);
+        }
+
+        .leaflet-control-watermark.leaflet-control {
+            margin-bottom: 0px;
+            margin-left: 5px;
+        }
+
+        /* Layer selector */
+        .leaflet-control-layers-selector {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            -o-appearance: none;
+            appearance: none;
+            width: 0px;
+            margin: 0px;
+        }
+
+        .checkbox_image {
+            vertical-align: middle;
+            margin-bottom: 5px;
+            border-radius: 4px;
+        }
+
+        label:hover .checkbox_image {
+            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+        }
+
+        label:active .checkbox_image {
+            box-shadow: 0 2px 1px rgba(0, 0, 0, 0.5);
+        }
+
+        @media screen and (max-width: 550px) {
+            .leaflet-control-watermark.leaflet-control {
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <div id="map"></div>
+        <div id="controlMap">
+            <div id="controlMapContainer" style="z-index: 1000;">
+                <div id="controlTypeDisplay">
+                    <div id="controlLineDisplay">
+                        <form action="#">
+                            <input type="radio" name="departmentDisplay" value="75" id="75"
+                                class="radioDepartmentNumber" />
+                            <label for="75" class="labelLineNumber"><img src="images/dep75.png" /></label>
+                            <input type="radio" name="departmentDisplay" value="77" id="77"
+                                class="radioDepartmentNumber" />
+                            <label for="77" class="labelLineNumber"><img src="images/dep77.png" /></label>
+                            <input type="radio" name="departmentDisplay" value="78" id="78"
+                                class="radioDepartmentNumber" /> <label for="78" class="labelLineNumber"><img
+                                    src="images/dep78.png" /></label>
+                            <input type="radio" name="departmentDisplay" value="91" id="91"
+                                class="radioDepartmentNumber" /> <label for="91" class="labelLineNumber"><img
+                                    src="images/dep91.png" /></label>
+                            <input type="radio" name="departmentDisplay" value="92" id="92"
+                                class="radioDepartmentNumber" /> <label for="92" class="labelLineNumber"><img
+                                    src="images/dep92.png" /></label>
+                            <input type="radio" name="departmentDisplay" value="93" id="93"
+                                class="radioDepartmentNumber" /> <label for="93" class="labelLineNumber"><img
+                                    src="images/dep93.png" /></label>
+                            <input type="radio" name="departmentDisplay" value="94" id="94"
+                                class="radioDepartmentNumber" /> <label for="94" class="labelLineNumber"><img
+                                    src="images/dep94.png" /></label>
+                            <input type="radio" name="departmentDisplay" value="95" id="95"
+                                class="radioDepartmentNumber" /> <label for="95" class="labelLineNumber"><img
+                                    src="images/dep95.png" /></label>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/leaflet.js"></script>
+    <script src="js/leaflet.ajax.min.js"></script>
+    <script src="js/leaflet-fullHash.js"></script>
+    <script src="js/Leaflet.fullscreen.min.js"></script>
+    <script src="js/easy-button.js"></script>
+    <script src="js/L.Control.Locate.js"></script>
+    <script src="js/leaflet.restoreview.js"></script>
+    <script src="js/tingle.min.js"></script>
+    <script src="js/turf.js"></script>
+    <script src="js/leaflet-legend.js"></script>
+    <script src="js/jquery-3.1.1.min.js"></script>
+    <script src="https://unpkg.com/showdown/dist/showdown.min.js"></script>
+    <script type="text/javascript">
+        var converter = new showdown.Converter();
+        var map;
+        var tooltipOpen = null;
+        var timeoutHideTooltip = null;
+        var weightFeatureHighlighted = 6;
+        var weightFeature = 3;
+        var departements_mask = {};
+        var departement_checked = null;
+        var layer_mask;
+        var departementsBoundaries = [];
+        var world_mask =
+            { "type": "Feature", "geometry": { "type": "Polygon", "coordinates": [[[-180.0, 90.0], [-180, -90], [180, -90], [180, 90], [-180.0, 90.0]]] }, "properties": {} };
+        var layersDisplayColor = { "Réseau départemental - projet": "#ff6600", "Réseau régional": "#737373", "Réseau régional (cours d’eau)": "#737373" };
+
+        // Change the mask displayed on the map
+        function changeMask(departement_number) {
+            if (typeof layer_mask != "undefined") {
+                layer_mask.remove();
+                delete layer_mask;
+            }
+            if (departement_number != 0) {
+                layer_mask = new L.GeoJSON(departements_mask[departement_number], { style: { color: '#555555', stroke: true, weight: 1 } }).addTo(map);
+            }
+        }
+
+        // Compute the length of the different segments in a layer and bind events (highlight) to the segments
+        function bindFeatureEvents(feature, layer) {
+            if (typeof feature.properties != "undefined" && feature.properties != null && typeof feature.properties.popup != "undefined") {
+                var popupContent = converter.makeHtml(feature.properties.popup);
+                popupContent = popupContent.replace('<a ', '<a target="_blank" ');
+                var tooltip = layer.bindTooltip(popupContent, { "direction": "top", "className": "tooltip" });
+                tooltip.removeEventListener("mouseout");
+                tooltip.addEventListener("mouseout", launchTimeoutHideTooltip);
+                tooltip.addEventListener("mouseover", stopTimeoutHideTooltip);
+                tooltip.on("tooltipopen", function (event) {
+                    if (tooltipOpen != null && tooltipOpen != event.target) {
+                        hideTooltipOpen();
+                    }
+                    tooltipOpen = event.target;
+                    document.getElementsByClassName("tooltip")[0].addEventListener("mouseover", stopTimeoutHideTooltip);
+                    document.getElementsByClassName("tooltip")[0].addEventListener("mouseout", launchTimeoutHideTooltip);
+                });
+            }
+
+            layer.on(
+                {
+                    mouseover: highlightFeature,
+                    mouseout: resetStyleFeature,
+                    click: function (e) { console.log(e.target.feature); }
+                });
+        }
+        function launchTimeoutHideTooltip(event) {
+            if (timeoutHideTooltip != null) {
+                clearTimeout(timeoutHideTooltip);
+                timeoutHideTooltip = null;
+            }
+            timeoutHideTooltip = setTimeout(hideTooltipOpen, 500);
+        }
+        function stopTimeoutHideTooltip(event) {
+            if (timeoutHideTooltip != null) {
+                clearTimeout(timeoutHideTooltip);
+                timeoutHideTooltip = null;
+            }
+        }
+        function hideTooltipOpen(event) {
+            if (tooltipOpen != null) {
+                tooltipOpen.closeTooltip();
+                tooltipOpen = null;
+            }
+        }
+        function highlightFeature(e) {
+            var layer = e.target;
+
+            // Nothing to highlight for a point, so don't change its style
+            if (layer.feature.geometry.type != "Point") {
+                layer.setStyle({ weight: weightFeatureHighlighted });
+            }
+        }
+        function resetStyleFeature(e) {
+            var layer = e.target;
+
+            // Nothing to highlight for a point, so don't change its style
+            if (layer.feature.geometry.type != "Point") {
+                layer.setStyle({ weight: weightFeature });
+            }
+        }
+
+
+        function handleMapData(mapData) {
+            mapData.layers.forEach(function (layer) {
+                if (typeof layer._umap_options.name != "undefined" && typeof layersDisplayColor[layer._umap_options.name] != "undefined") {
+                    var group = L.featureGroup();
+                    var groupColor = layersDisplayColor[layer._umap_options.name];
+
+                    for (var i_feature = 0; i_feature < layer.features.length; i_feature++) {
+                        var coordinates = layer.features[i_feature].geometry.coordinates;
+                        var style = { 'color': groupColor };
+
+                        if (layer.features[i_feature].geometry.type == "LineString") {
+                            var polyline = L.polyline(coordinates.map(latlng => [latlng[1], latlng[0]]), style);
+                        } else if (layer.features[i_feature].geometry.type == "MultiLineString") {
+                            var polyline = L.polyline(coordinates.map(function (line) {
+                                return line.map(latlng => [latlng[1], latlng[0]]);
+                            }), style);
+                        }
+                        group.addLayer(polyline);
+                    }
+                    group.addTo(map);
+                }
+            })
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+
+            // Create departements masks
+            var departementsLayer = new L.GeoJSON.AJAX("departements.geojson");
+            departementsLayer.on("data:loaded", function () {
+                departementsLayer.eachLayer(function (layer) {
+                    var departement_number = Number(layer.feature.properties.code_dept);
+                    departementsBoundaries.push({ "geometry": layer.feature.geometry, "departement": departement_number });
+                    departements_mask[departement_number] = turf.difference(world_mask, layer.feature);
+                });
+
+                var queryDict = {}
+                location.search.substr(1).split("&").forEach(function (item) { queryDict[item.split("=")[0]] = item.split("=")[1] })
+
+                // Create the map, add base layer and correct attribution for the map
+                map = new L.Map('map', {
+                    fullscreenControl: true,
+                    zoomControl: true,
+                    scrollWheelZoom: queryDict['noZoom'] ? false : true,
+                    minZoom: 0
+                });
+                L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+                    attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ',
+                    minZoom: 0,
+                    maxZoom: 20,
+                }).addTo(map);
+                map.attributionControl.setPrefix('Par le <a href="https://velo-iledefrance.fr" title="Collectif Vélo Ile-de-France">CVIdF</a> | <a href="http://leafletjs.com" title="A JS library for interactive maps">Leaflet</a>');
+                if (!map.restoreView()) {
+                    // Default view on Paris
+                    map.setView([48.8589, 2.3469], 11);
+                }
+
+                // Add logos
+                L.Control.Watermark = L.Control.extend({
+                    onAdd: function (map) {
+                        var div = L.DomUtil.create('div');
+                        div.className = 'leaflet-control-watermark';
+
+                        var a1 = L.DomUtil.create('a');
+                        a1.href = "https://velo-iledefrance.fr"
+
+                        var img1 = L.DomUtil.create('img')
+                        img1.src = "images/logo_cvidf_rvb_64x64.png"
+                        a1.appendChild(img1);
+
+                        div.appendChild(a1);
+                        return div;
+                    },
+
+                    onRemove: function (map) {
+                        // Nothing to do here
+                    }
+                });
+                L.control.watermark = function (opts) {
+                    return new L.Control.Watermark(opts);
+                }
+                L.control.watermark({ position: 'bottomleft' }).addTo(map);
+
+                // Set up layers
+                $.getJSON("carte.json", function (data) { handleMapData(data); });
+
+                // Set up geolocation plugin
+                L.control.locate().addTo(map);
+
+                // Add a legend
+                L.Control.Legend = L.Control.extend({
+                    onAdd: function (map) {
+                        var div = L.DomUtil.create('div');
+
+                        div.innerHTML = "dfdf";
+
+                        return div;
+                    },
+
+                    onRemove: function (map) {
+                        // Nothing to do here
+                    }
+                });
+
+                L.control.Legend = function (opts) {
+                    return new L.Control.Legend(opts);
+                }
+
+                L.control.Legend({ position: 'topright' }).addTo(map);
+
+                document.querySelectorAll("input[name=departmentDisplay]").forEach(radio =>
+                    radio.addEventListener("click", (event) => {
+                        if (radio.value != departement_checked) {
+                            changeMask(parseInt(radio.value));
+                            window.location.hash = radio.value;
+                            departement_checked = radio.value;
+                        } else {
+                            changeMask(0);
+                            radio.checked = false;
+                            departement_checked = null;
+                        }
+                    })
+                );
+
+                if (window.location.hash.length > 0) {
+                    var departement = parseInt(window.location.hash.replace('#', ''));
+                    console.log(departement);
+                    changeMask(departement);
+                    document.getElementById("" + departement + "").checked = true;
+                    departement_checked = departement;
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
