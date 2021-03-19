@@ -989,34 +989,6 @@
         {
             "type": "Feature",
             "properties": {
-                "description": "visio le 19/02/2021 hésitation sur la rue de Paris",
-                "name": "ID 30 ID 31 : jonction Meudon - Orsay par Saclay"
-            },
-            "geometry": {
-                "type": "LineString",
-                "coordinates": [
-                    [
-                        2.22925900000,
-                        48.76668400000
-                    ],
-                    [
-                        2.22321900000,
-                        48.76174800000
-                    ],
-                    [
-                        2.21618100000,
-                        48.75549500000
-                    ],
-                    [
-                        2.21519400000,
-                        48.75498600000
-                    ]
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
                 "description": "Selon tracé du schéma départemental. Cette voie a été demandée à GPSEO par Unvéloquiroule. Elle dessert de nombreux bassins d'emplois, zones commerciales et la base de loisirs de Verneuil\nTracé Poissy-Villennes affiné par PacteTransition Villennes",
                 "name": "Suivi de la Seine Mantes Poissy rive gauche"
             },
@@ -1496,8 +1468,8 @@
                 "type": "LineString",
                 "coordinates": [
                     [
-                        2.21491500000,
-                        48.75265100000
+                        2.21488281349,
+                        48.75255904260
                     ],
                     [
                         2.21588000000,
@@ -15251,12 +15223,8 @@
                 "type": "LineString",
                 "coordinates": [
                     [
-                        2.21519400000,
-                        48.75498600000
-                    ],
-                    [
-                        2.21553700000,
-                        48.75334500000
+                        2.21483962566,
+                        48.75251031508
                     ],
                     [
                         2.21133100000,
