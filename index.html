@@ -29,35 +29,35 @@
 
     <title>REV départemental – Proposition de réseau express vélo départemental</title>
 
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
-    <!--link rel="stylesheet" href="css/leaflet.css">
-    <link rel="stylesheet" href="css/easy-button.css">
-    <link rel="stylesheet" href="css/L.Control.Locate.min.css">
-    <link rel="stylesheet" href="css/fa-all.min.css">
-    <link rel="stylesheet" href="css/leaflet-legend.css">
-    <link rel='stylesheet' href='css/leaflet.fullscreen.css' />
-    <link rel='stylesheet' href='css/merriweathersans.css' /-->
+    <!--link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/-->
+    <link rel="stylesheet" href="assets/css/leaflet.css">
+    <link rel="stylesheet" href="assets/css/easy-button.css">
+    <link rel="stylesheet" href="assets/css/L.Control.Locate.min.css">
+    <link rel="stylesheet" href="assets/css/fa-all.min.css">
+    <link rel="stylesheet" href="assets/css/leaflet-legend.css">
+    <link rel='stylesheet' href='assets/css/leaflet.fullscreen.css'>
+    <link rel='stylesheet' href='assets/css/merriweathersans.css'>
 
     <!-- Make sure you put this AFTER Leaflet's CSS -->
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+    <!--script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script-->
 
     <style type="text/css">
         @font-face {
             font-family: 'Roboto';
             font-style: normal;
             font-weight: 400;
-            src: url('/webfonts/roboto-v20-latin-regular.eot');
+            src: url('assets/webfonts/roboto-v20-latin-regular.eot');
             /* IE9 Compat Modes */
             src: local('Roboto'), local('Roboto-Regular'),
-                url('/webfonts/roboto-v20-latin-regular.eot?#iefix') format('embedded-opentype'),
+                url('assets/webfonts/roboto-v20-latin-regular.eot?#iefix') format('embedded-opentype'),
                 /* IE6-IE8 */
-                url('/webfonts/roboto-v20-latin-regular.woff2') format('woff2'),
+                url('assets/webfonts/roboto-v20-latin-regular.woff2') format('woff2'),
                 /* Super Modern Browsers */
-                url('/webfonts/roboto-v20-latin-regular.woff') format('woff'),
+                url('assets/webfonts/roboto-v20-latin-regular.woff') format('woff'),
                 /* Modern Browsers */
-                url('/webfonts/roboto-v20-latin-regular.ttf') format('truetype'),
+                url('assets/webfonts/roboto-v20-latin-regular.ttf') format('truetype'),
                 /* Safari, Android, iOS */
-                url('/webfonts/roboto-v20-latin-regular.svg#Roboto') format('svg');
+                url('assets/webfonts/roboto-v20-latin-regular.svg#Roboto') format('svg');
             /* Legacy iOS */
         }
 
@@ -263,17 +263,17 @@
         </div>
     </div>
 
-    <script src="js/leaflet.js"></script>
-    <script src="js/leaflet.ajax.min.js"></script>
-    <script src="js/leaflet-fullHash.js"></script>
-    <script src="js/Leaflet.fullscreen.min.js"></script>
-    <script src="js/easy-button.js"></script>
-    <script src="js/L.Control.Locate.js"></script>
-    <script src="js/leaflet.restoreview.js"></script>
-    <script src="js/tingle.min.js"></script>
-    <script src="js/turf.js"></script>
-    <script src="js/leaflet-legend.js"></script>
-    <script src="js/jquery-3.1.1.min.js"></script>
+    <script src="assets/js/leaflet.js"></script>
+    <script src="assets/js/leaflet.ajax.min.js"></script>
+    <script src="assets/js/leaflet-fullHash.js"></script>
+    <script src="assets/js/Leaflet.fullscreen.min.js"></script>
+    <script src="assets/js/easy-button.js"></script>
+    <script src="assets/js/L.Control.Locate.js"></script>
+    <script src="assets/js/leaflet.restoreview.js"></script>
+    <script src="assets/js/tingle.min.js"></script>
+    <script src="assets/js/turf.js"></script>
+    <script src="assets/js/leaflet-legend.js"></script>
+    <script src="assets/js/jquery-3.1.1.min.js"></script>
     <script src="https://unpkg.com/showdown/dist/showdown.min.js"></script>
     <script type="text/javascript">
         var converter = new showdown.Converter();
@@ -391,7 +391,7 @@
         document.addEventListener('DOMContentLoaded', function () {
 
             // Create departements masks
-            var departementsLayer = new L.GeoJSON.AJAX("departements.geojson");
+            var departementsLayer = new L.GeoJSON.AJAX("assets/departements.geojson");
             departementsLayer.on("data:loaded", function () {
                 departementsLayer.eachLayer(function (layer) {
                     var departement_number = Number(layer.feature.properties.code_dept);
@@ -447,7 +447,9 @@
                 L.control.watermark({ position: 'bottomleft' }).addTo(map);
 
                 // Set up layers
-                $.getJSON("carte.json", function (data) { handleMapData(data); });
+                // $.getJSON("assets/carte.json", function (data) { handleMapData(data); });
+                // $.getJSON("rerv.geojson", function (data) { handleMapData(data); });
+                $.getJSON("rev_departemental.geojson", function (data) { handleMapData(data); });
 
                 // Set up geolocation plugin
                 L.control.locate().addTo(map);
