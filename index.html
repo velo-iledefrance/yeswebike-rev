@@ -29,7 +29,6 @@
 
     <title>REV départemental – Proposition de réseau express vélo départemental</title>
 
-    <!--link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/-->
     <link rel="stylesheet" href="assets/css/leaflet.css">
     <link rel="stylesheet" href="assets/css/easy-button.css">
     <link rel="stylesheet" href="assets/css/L.Control.Locate.min.css">
@@ -37,9 +36,6 @@
     <link rel="stylesheet" href="assets/css/leaflet-legend.css">
     <link rel='stylesheet' href='assets/css/leaflet.fullscreen.css'>
     <link rel='stylesheet' href='assets/css/merriweathersans.css'>
-
-    <!-- Make sure you put this AFTER Leaflet's CSS -->
-    <!--script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script-->
 
     <style type="text/css">
         @font-face {
@@ -234,28 +230,28 @@
                         <form action="#">
                             <input type="radio" name="departmentDisplay" value="75" id="75"
                                 class="radioDepartmentNumber" />
-                            <label for="75" class="labelLineNumber"><img src="images/dep75.png" /></label>
+                            <label for="75" class="labelLineNumber"><img src="assets/images/dep75.png" /></label>
                             <input type="radio" name="departmentDisplay" value="77" id="77"
                                 class="radioDepartmentNumber" />
-                            <label for="77" class="labelLineNumber"><img src="images/dep77.png" /></label>
+                            <label for="77" class="labelLineNumber"><img src="assets/images/dep77.png" /></label>
                             <input type="radio" name="departmentDisplay" value="78" id="78"
                                 class="radioDepartmentNumber" /> <label for="78" class="labelLineNumber"><img
-                                    src="images/dep78.png" /></label>
+                                    src="assets/images/dep78.png" /></label>
                             <input type="radio" name="departmentDisplay" value="91" id="91"
                                 class="radioDepartmentNumber" /> <label for="91" class="labelLineNumber"><img
-                                    src="images/dep91.png" /></label>
+                                    src="assets/images/dep91.png" /></label>
                             <input type="radio" name="departmentDisplay" value="92" id="92"
                                 class="radioDepartmentNumber" /> <label for="92" class="labelLineNumber"><img
-                                    src="images/dep92.png" /></label>
+                                    src="assets/images/dep92.png" /></label>
                             <input type="radio" name="departmentDisplay" value="93" id="93"
                                 class="radioDepartmentNumber" /> <label for="93" class="labelLineNumber"><img
-                                    src="images/dep93.png" /></label>
+                                    src="assets/images/dep93.png" /></label>
                             <input type="radio" name="departmentDisplay" value="94" id="94"
                                 class="radioDepartmentNumber" /> <label for="94" class="labelLineNumber"><img
-                                    src="images/dep94.png" /></label>
+                                    src="assets/images/dep94.png" /></label>
                             <input type="radio" name="departmentDisplay" value="95" id="95"
                                 class="radioDepartmentNumber" /> <label for="95" class="labelLineNumber"><img
-                                    src="images/dep95.png" /></label>
+                                    src="assets/images/dep95.png" /></label>
                         </form>
                     </div>
                 </div>
@@ -288,7 +284,10 @@
         var departementsBoundaries = [];
         var world_mask =
             { "type": "Feature", "geometry": { "type": "Polygon", "coordinates": [[[-180.0, 90.0], [-180, -90], [180, -90], [180, 90], [-180.0, 90.0]]] }, "properties": {} };
-        var layersDisplayColor = { "Réseau départemental - projet": "#ff6600", "Réseau régional": "#737373", "Réseau régional (cours d’eau)": "#737373" };
+        var layersDisplayColor = {
+            "REV": "#ff6600",
+            "RERV": "#737373"
+        };
 
         // Change the mask displayed on the map
         function changeMask(departement_number) {
@@ -364,19 +363,46 @@
         }
 
 
-        function handleMapData(mapData) {
-            mapData.layers.forEach(function (layer) {
-                if (typeof layer._umap_options.name !== "undefined" && typeof layersDisplayColor[layer._umap_options.name] !== "undefined") {
+        // function handleMapData(mapData) {
+        //     console.log(mapData);
+        //     mapData.layers.forEach(function (layer) {
+        //         if (typeof layer._umap_options.name !== "undefined" && typeof layersDisplayColor[layer._umap_options.name] !== "undefined") {
+        //             var group = L.featureGroup();
+        //             var groupColor = layersDisplayColor[layer._umap_options.name];
+
+        //             for (var i_feature = 0; i_feature < layer.features.length; i_feature++) {
+        //                 var coordinates = layer.features[i_feature].geometry.coordinates;
+        //                 var style = { 'color': groupColor };
+
+        //                 if (layer.features[i_feature].geometry.type == "LineString") {
+        //                     var polyline = L.polyline(coordinates.map(latlng => [latlng[1], latlng[0]]), style);
+        //                 } else if (layer.features[i_feature].geometry.type == "MultiLineString") {
+        //                     var polyline = L.polyline(coordinates.map(function (line) {
+        //                         return line.map(latlng => [latlng[1], latlng[0]]);
+        //                     }), style);
+        //                 }
+        //                 group.addLayer(polyline);
+        //             }
+        //             group.addTo(map);
+        //         }
+        //     })
+        // }
+
+        function handleMapData(mapData, layer) {
+            // mapData.layers.forEach(function (layer) {
+                // if (typeof layer._umap_options.name !== "undefined" && typeof layersDisplayColor[layer._umap_options.name] !== "undefined") {
+                if (typeof layer !== "undefined" && typeof layersDisplayColor[layer] !== "undefined") {
                     var group = L.featureGroup();
-                    var groupColor = layersDisplayColor[layer._umap_options.name];
+                    var groupColor = layersDisplayColor[layer];
 
-                    for (var i_feature = 0; i_feature < layer.features.length; i_feature++) {
-                        var coordinates = layer.features[i_feature].geometry.coordinates;
+                    for (var i_feature = 0; i_feature < mapData.features.length; i_feature++) {
+                        var coordinates = mapData.features[i_feature].geometry.coordinates;
                         var style = { 'color': groupColor };
+                        // var style = { 'color': '#ff6600' };
 
-                        if (layer.features[i_feature].geometry.type == "LineString") {
+                        if (mapData.features[i_feature].geometry.type == "LineString") {
                             var polyline = L.polyline(coordinates.map(latlng => [latlng[1], latlng[0]]), style);
-                        } else if (layer.features[i_feature].geometry.type == "MultiLineString") {
+                        } else if (mapData.features[i_feature].geometry.type == "MultiLineString") {
                             var polyline = L.polyline(coordinates.map(function (line) {
                                 return line.map(latlng => [latlng[1], latlng[0]]);
                             }), style);
@@ -385,7 +411,7 @@
                     }
                     group.addTo(map);
                 }
-            })
+            // })
         }
 
         document.addEventListener('DOMContentLoaded', function () {
@@ -430,7 +456,7 @@
                         a1.href = "https://velo-iledefrance.fr"
 
                         var img1 = L.DomUtil.create('img')
-                        img1.src = "images/logo_cvidf_rvb_64x64.png"
+                        img1.src = "assets/images/logo_cvidf_rvb_64x64.png"
                         a1.appendChild(img1);
 
                         div.appendChild(a1);
@@ -448,8 +474,8 @@
 
                 // Set up layers
                 // $.getJSON("assets/carte.json", function (data) { handleMapData(data); });
-                // $.getJSON("rerv.geojson", function (data) { handleMapData(data); });
-                $.getJSON("rev_departemental.geojson", function (data) { handleMapData(data); });
+                $.getJSON("rerv.geojson", function (data) { handleMapData(data, "RERV"); });
+                $.getJSON("rev_departemental.geojson", function (data) { handleMapData(data, "REV"); });
 
                 // Set up geolocation plugin
                 L.control.locate().addTo(map);
@@ -491,7 +517,7 @@
 
                 if (window.location.hash.length > 0) {
                     var departement = parseInt(window.location.hash.replace('#', ''));
-                    console.log(departement);
+                    // console.log(departement);
                     changeMask(departement);
                     document.getElementById("" + departement + "").checked = true;
                     departement_checked = departement;
