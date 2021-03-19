@@ -5,18 +5,18 @@
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name=description content="Observatoire Collectif Vélo Ile-de-France">
+    <meta name=description content="Proposition de réseau express vélo départemental">
     <meta name="twitter:image:src" content="https://carte.velo-iledefrance.fr/images/social_media.png">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Observatoire Collectif Vélo Ile-de-France">
-    <meta name="twitter:description" content="Observatoire des pistes cyclables temporaires en Ile-de-France">
+    <meta name="twitter:title" content="Observatoire Collectif Vélo Île-de-France">
+    <meta name="twitter:description" content="Proposition de réseau express vélo départemental">
 
-    <meta property="og:site_name" content="Observatoire Collectif Vélo Ile-de-France">
+    <meta property="og:site_name" content="REV départemental – Proposition de réseau express vélo départemental">
     <meta property="og:image" content="https://carte.velo-iledefrance.fr/images/social_media.png">
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Observatoire Collectif Vélo Ile-de-France">
+    <meta property="og:title" content="REV départemental – Proposition de réseau express vélo départemental">
     <meta property="og:url" content="https://velo-iledefrance.fr/">
-    <meta property="og:description" content="Observatoire des pistes cyclables temporaires en Ile-de-France">
+    <meta property="og:description" content="Proposition de réseau express vélo départemental">
 
     <!--link rel="icon" type="image/png" sizes="16x16" href="https://carte.velo-iledefrance.fr/images/favicon-16.png"-->
     <link rel="icon" type="image/png" sizes="192x192"
@@ -27,15 +27,19 @@
         href="https://carte.velo-iledefrance.fr/images/cropped-favicon_cvidf_rvb-32x32.png">
     <!--link rel="shortcut icon" href="https://carte.velo-iledefrance.fr/images/favicon.ico"-->
 
-    <title>Observatoire des coronapistes d’Île de France</title>
+    <title>REV départemental – Proposition de réseau express vélo départemental</title>
 
-    <link rel="stylesheet" href="css/leaflet.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
+    <!--link rel="stylesheet" href="css/leaflet.css">
     <link rel="stylesheet" href="css/easy-button.css">
     <link rel="stylesheet" href="css/L.Control.Locate.min.css">
     <link rel="stylesheet" href="css/fa-all.min.css">
     <link rel="stylesheet" href="css/leaflet-legend.css">
     <link rel='stylesheet' href='css/leaflet.fullscreen.css' />
-    <link rel='stylesheet' href='css/merriweathersans.css' />
+    <link rel='stylesheet' href='css/merriweathersans.css' /-->
+
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
 
     <style type="text/css">
         @font-face {
@@ -288,18 +292,18 @@
 
         // Change the mask displayed on the map
         function changeMask(departement_number) {
-            if (typeof layer_mask != "undefined") {
+            if (typeof layer_mask !== "undefined") {
                 layer_mask.remove();
                 delete layer_mask;
             }
-            if (departement_number != 0) {
+            if (departement_number !== 0) {
                 layer_mask = new L.GeoJSON(departements_mask[departement_number], { style: { color: '#555555', stroke: true, weight: 1 } }).addTo(map);
             }
         }
 
         // Compute the length of the different segments in a layer and bind events (highlight) to the segments
         function bindFeatureEvents(feature, layer) {
-            if (typeof feature.properties != "undefined" && feature.properties != null && typeof feature.properties.popup != "undefined") {
+            if (typeof feature.properties !== "undefined" && feature.properties != null && typeof feature.properties.popup !== "undefined") {
                 var popupContent = converter.makeHtml(feature.properties.popup);
                 popupContent = popupContent.replace('<a ', '<a target="_blank" ');
                 var tooltip = layer.bindTooltip(popupContent, { "direction": "top", "className": "tooltip" });
@@ -362,7 +366,7 @@
 
         function handleMapData(mapData) {
             mapData.layers.forEach(function (layer) {
-                if (typeof layer._umap_options.name != "undefined" && typeof layersDisplayColor[layer._umap_options.name] != "undefined") {
+                if (typeof layer._umap_options.name !== "undefined" && typeof layersDisplayColor[layer._umap_options.name] !== "undefined") {
                     var group = L.featureGroup();
                     var groupColor = layersDisplayColor[layer._umap_options.name];
 
@@ -410,7 +414,7 @@
                     minZoom: 0,
                     maxZoom: 20,
                 }).addTo(map);
-                map.attributionControl.setPrefix('Par le <a href="https://velo-iledefrance.fr" title="Collectif Vélo Ile-de-France">CVIdF</a> | <a href="http://leafletjs.com" title="A JS library for interactive maps">Leaflet</a>');
+                map.attributionControl.setPrefix('Par le <a href="https://velo-iledefrance.fr" title="Collectif Vélo Île-de-France">CVIdF</a> | <a href="http://leafletjs.com" title="A JS library for interactive maps">Leaflet</a>');
                 if (!map.restoreView()) {
                     // Default view on Paris
                     map.setView([48.8589, 2.3469], 11);
